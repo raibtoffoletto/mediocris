@@ -1,5 +1,5 @@
 import { withError, withId } from '@lib/api';
-import { getRefuel, patchRefuel, removeRefuel } from '@lib/repository';
+import { getRefuel, patchRefuel, removeRefuel } from '@lib/data/repository';
 
 export const GET = withError((_, params) =>
   withId(params, async (id) => {

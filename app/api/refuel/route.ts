@@ -1,5 +1,5 @@
 import { withError } from '@lib/api';
-import { listRefuels, putRefuel } from '@lib/repository';
+import { listRefuels, putRefuel } from '@lib/data/repository';
 
 export const GET = withError(async () => Response.json(await listRefuels()));
 

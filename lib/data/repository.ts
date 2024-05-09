@@ -1,4 +1,4 @@
-import { exec, get, query } from './db';
+import { exec, get, query } from '@lib/data/db';
 
 function mapRefuel(row: Row) {
   const [year, month, day] = String(row['date']).split('-');

@@ -1,7 +1,3 @@
-interface IParent {
-  children: React.ReactNode;
-}
-
 interface RefuelDate {
   year: number;
   month: number;
@@ -16,12 +12,6 @@ interface Refuel {
   liters: number;
   price: number;
   full: boolean;
-}
-
-type RefuelDTO = Omit<Refuel, 'id'>;
-
-interface RequestParams {
-  params: Record<string, string>;
 }
 
 type Row = Record<string, any>;
