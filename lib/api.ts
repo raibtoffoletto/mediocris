@@ -1,3 +1,9 @@
+export async function fetcher(url: string) {
+  const request = await fetch(url);
+
+  return request.json();
+}
+
 export function withId(
   { params }: RequestParams,
   callback: (id: number) => Promise<Response> | Response

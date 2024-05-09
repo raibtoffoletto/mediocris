@@ -17,3 +17,9 @@ interface Refuel {
 type Row = Record<string, any>;
 
 type TransformRow<T> = (row: Row) => T;
+
+type RefuelDTO = Omit<Refuel, 'id'>;
+
+interface RequestParams {
+  params: Record<string, string>;
+}

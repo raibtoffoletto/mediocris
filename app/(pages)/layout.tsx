@@ -1,3 +1,5 @@
+import { DataProvider } from '@contexts/DataStore';
+
 export default function AppProviders({ children }: IParent) {
-  return <>{children}</>;
+  return <DataProvider>{children}</DataProvider>;
 }

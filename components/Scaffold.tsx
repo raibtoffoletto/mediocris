@@ -1,4 +1,4 @@
-import { Routes } from '@enums';
+import { Routes } from '@constants';
 import { sedan } from '@lib/infrastructure/fonts';
 import metadata from '@lib/infrastructure/metadata';
 import { InsertChart as InsertChartIcon } from '@mui/icons-material';
@@ -25,7 +25,7 @@ export default function Scaffold({ children }: IParent) {
     <>
       <AppBar color="inherit">
         <Container
-          maxWidth="lg"
+          maxWidth="md"
           sx={{
             px,
             py: 0.5,
@@ -92,10 +92,11 @@ export default function Scaffold({ children }: IParent) {
           px,
           pb: 4,
           overflowX: 'hidden',
-          maxWidth: 'lg',
+          maxWidth: 'md',
           width: '100%',
           flexGrow: 1,
           alignItems: 'center',
+          gap: 2,
         }}
       >
         <Box sx={{ height: 80 }} />

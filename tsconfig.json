@@ -20,8 +20,9 @@
     "paths": {
       "@app/*": ["./app/*"],
       "@components/*": ["./components/*"],
-      "@lib/*": ["./lib/*"],
-      "@enums": ["./types/enums"]
+      "@constants": ["./types/constants"],
+      "@contexts/*": ["./contexts/*"],
+      "@lib/*": ["./lib/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

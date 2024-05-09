@@ -1,13 +1,19 @@
-import { Lato, Sedan } from 'next/font/google';
+import { Lato, Sedan, Ubuntu_Mono } from 'next/font/google';
 
 export const lato = Lato({
   display: 'swap',
   subsets: ['latin'],
-  weight: ['100', '300', '400', '700', '900'],
+  weight: ['300', '400', '700'],
 });
 
 export const sedan = Sedan({
   display: 'swap',
   subsets: ['latin'],
   weight: ['400'],
+});
+
+export const ubuntu = Ubuntu_Mono({
+  display: 'swap',
+  subsets: ['latin'],
+  weight: ['400', '700'],
 });
