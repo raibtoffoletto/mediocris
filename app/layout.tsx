@@ -1,19 +1,19 @@
-import theme from '@lib/theme';
+import Scaffold from '@components/Scaffold';
+import theme from '@lib/infrastructure/theme';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
-import { ThemeProvider } from '@mui/material/styles';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Mediocris',
-  description: 'Fuel and economy tracker',
-};
+export { default as metadata } from '@lib/infrastructure/metadata';
 
 export default function RootLayout({ children }: IParent) {
   return (
     <html lang="en">
       <body>
         <AppRouterCacheProvider>
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+
+            <Scaffold>{children}</Scaffold>
+          </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
     </html>
