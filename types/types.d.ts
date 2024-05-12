@@ -15,4 +15,4 @@ type IDataContext = {
   ) => void;
 };
 
-type DataTableProps = { data: Refuel[] };
+type DataTableProps = { data: IEconomy<Refuel>[] };

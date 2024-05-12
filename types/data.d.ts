@@ -14,6 +14,8 @@ interface Refuel {
   full: boolean;
 }
 
+type IEconomy<T = {}> = T & { economy: number | null };
+
 type Row = Record<string, any>;
 
 type TransformRow<T> = (row: Row) => T;

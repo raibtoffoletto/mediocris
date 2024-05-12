@@ -64,12 +64,44 @@ function mapRefuelRow({
   };
 }
 
-export function listRefuels() {
-  return query<Refuel>(
+function mapEconomy(row: Refuel, index: number, table: Refuel[]) {
+  if (!row.full) {
+    return { ...row, economy: null };
+  }
+
+  const olders = table.slice(index + 1);
+  const nextFull = olders.findIndex((x) => !!x.full);
+  const range = olders.slice(0, nextFull >= 0 ? nextFull + 1 : -1);
+
+  if (!range.length) {
+    return { ...row, economy: null };
+  }
+
+  const sum = range.reduce(
+    (a, b) => ({
+      odometer: Math.min(a.odometer, b.odometer),
+      liters: a.liters + b.liters,
+    }),
+    {
+      odometer: range[0].odometer,
+      liters: 0,
+    }
+  );
+
+  return {
+    ...row,
+    economy: (row.odometer - sum.odometer) / (row.liters + sum.liters),
+  };
+}
+
+export async function listRefuels(): Promise<IEconomy<Refuel>[]> {
+  const records = await query<Refuel>(
     'SELECT rowid, * FROM refuels ORDER BY date DESC;',
     [],
     mapRefuel
   );
+
+  return records.map(mapEconomy);
 }
 
 export function getRefuel(id: number) {

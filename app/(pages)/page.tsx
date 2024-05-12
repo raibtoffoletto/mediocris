@@ -3,7 +3,7 @@
 import PageTitle from '@components/PageTitle';
 import { RowsPerPage } from '@constants';
 import { useData } from '@contexts/DataStore';
-import DataTable from '@contexts/DataTable';
+import DataTable from '@components/DataTable';
 import { TablePagination } from '@mui/material';
 
 export default function Refuels() {

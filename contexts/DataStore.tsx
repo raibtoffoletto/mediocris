@@ -23,7 +23,7 @@ export const useData = () => useContext(DataContext);
 
 export function DataProvider({ children }: IParent) {
   const [page, setPage] = useState(0);
-  const { data, isLoading, isValidating } = useSWR<Refuel[]>(
+  const { data, isLoading, isValidating } = useSWR<IEconomy<Refuel>[]>(
     ApiRoutes.refuels,
     fetcher
   );

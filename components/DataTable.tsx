@@ -30,12 +30,20 @@ const getDateString = (date: RefuelDate) => {
     .toLowerCase()} ${date.year}`;
 };
 
-const getRowData = ({ date, liters, odometer, price, ...row }: Refuel) => ({
+const getRowData = ({
+  date,
+  liters,
+  odometer,
+  price,
+  economy,
+  ...row
+}: IEconomy<Refuel>) => ({
   ...row,
   date: getDateString(date),
   liters: `${liters.toFixed(2)} l`,
   odometer: `${odometer} km`,
   price: `${price.toFixed(3)} €`,
+  economy: !!economy ? `${economy.toFixed(1)} km/l` : null,
 });
 
 type TCProps = TableCellProps & { align?: React.CSSProperties['textAlign'] };
@@ -44,11 +52,19 @@ const TC = ({ align, ...props }: TCProps) => (
   <TableCell {...props} sx={{ ...props?.sx, textAlign: align ?? 'left' }} />
 );
 
-const TR = (row: Refuel) => {
-  const { date, banner, full, liters, odometer, price } = getRowData(row);
+const TR = (row: IEconomy<Refuel>) => {
+  const { date, banner, full, liters, odometer, price, economy } =
+    getRowData(row);
 
   return (
-    <TableRow>
+    <TableRow
+      sx={{
+        '& td': {
+          color: full ? 'text.primary' : 'grey.500',
+          fontWeight: full ? '400' : '700',
+        },
+      }}
+    >
       <TC>{date}</TC>
 
       <TC>{banner}</TC>
@@ -59,21 +75,12 @@ const TR = (row: Refuel) => {
 
       <TC align="right">{price}</TC>
 
-      <TC>
-        <Stack
-          component="span"
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
-        >
-          {full ? <CheckCircleIcon sx={{ color: 'primary.dark' }} /> : null}
-        </Stack>
-      </TC>
+      <TC align="right">{economy}</TC>
     </TableRow>
   );
 };
 
-const Card = ({ shade, ...row }: Refuel & { shade: boolean }) => {
+const Card = ({ shade, ...row }: IEconomy<Refuel> & { shade: boolean }) => {
   const { date, banner, full, liters, odometer, price } = getRowData(row);
 
   return (
@@ -183,7 +190,7 @@ export default function DataTable({ data }: DataTableProps) {
 
               <TC align="right">Price</TC>
 
-              <TC align="center">Full</TC>
+              <TC align="right">Economy</TC>
             </TableRow>
           </TableHead>
 
