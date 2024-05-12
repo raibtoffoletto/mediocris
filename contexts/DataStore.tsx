@@ -17,12 +17,14 @@ const DataContext = createContext<IDataContext>({
   total: 0,
   pageData: [],
   changePage: () => undefined,
+  changeSelected: () => undefined,
 });
 
 export const useData = () => useContext(DataContext);
 
 export function DataProvider({ children }: IParent) {
   const [page, setPage] = useState(0);
+  const [selected, setSelected] = useState<Refuel | undefined>();
   const { data, isLoading, isValidating } = useSWR<IEconomy<Refuel>[]>(
     ApiRoutes.refuels,
     fetcher
@@ -34,7 +36,22 @@ export function DataProvider({ children }: IParent) {
     [page, data]
   );
 
-  const changePage = useCallback((_: any, p: number) => setPage(p), []);
+  const changePage = useCallback((_: any, p: number) => {
+    setPage(p);
+    setSelected(undefined);
+  }, []);
+
+  const changeSelected = useCallback(
+    (value: Refuel) =>
+      setSelected((_selected) => {
+        if (!value || value.id === _selected?.id) {
+          return undefined;
+        }
+
+        return value;
+      }),
+    []
+  );
 
   return (
     <DataContext.Provider
@@ -44,6 +61,8 @@ export function DataProvider({ children }: IParent) {
         page,
         pageData,
         changePage,
+        selected,
+        changeSelected,
       }}
     >
       {children}

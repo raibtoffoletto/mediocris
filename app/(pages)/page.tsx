@@ -5,6 +5,7 @@ import { RowsPerPage } from '@constants';
 import { useData } from '@contexts/DataStore';
 import DataTable from '@components/DataTable';
 import { TablePagination } from '@mui/material';
+import Actions from '@components/Actions';
 
 export default function Refuels() {
   const { isLoading, pageData, total, page, changePage } = useData();
@@ -32,6 +33,8 @@ export default function Refuels() {
           '& .MuiTablePagination-spacer': { display: 'none' },
         }}
       />
+
+      <Actions />
     </>
   );
 }

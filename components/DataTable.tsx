@@ -1,8 +1,11 @@
+import { useData } from '@contexts/DataStore';
 import { ubuntu } from '@lib/infrastructure/fonts';
 import type { TableCellProps } from '@mui/material';
 import {
+  Checkbox,
   Divider,
   Paper,
+  CardActionArea,
   Stack,
   Table,
   TableBody,
@@ -12,7 +15,9 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import { CheckCircle as DoneIcon } from '@mui/icons-material';
 import { Fragment } from 'react';
+import Grow from '@mui/material/Grow';
 
 const getDateString = (date: RefuelDate) => {
   const _date = new Date(date.year, date.month, date.day);
@@ -49,16 +54,29 @@ const TC = ({ align, ...props }: TCProps) => (
 );
 
 const TR = (row: IEconomy<Refuel>) => {
-  const { date, banner, full, liters, odometer, price, economy } =
+  const { selected, changeSelected } = useData();
+  const { id, date, banner, full, liters, odometer, price, economy } =
     getRowData(row);
 
+  const isSelected = selected?.id === id;
+
   return (
-    <TableRow className={full ? '' : 'partial'}>
-      <TC>{date}</TC>
+    <TableRow className={full ? '' : 'partial'} selected={isSelected}>
+      <TC>
+        <Checkbox
+          sx={{ p: 0 }}
+          tabIndex={0}
+          checked={isSelected}
+          onChange={() => changeSelected(row)}
+          aria-label={`select row for ${date}`}
+        />
+      </TC>
 
       <TC>{odometer}</TC>
 
       <TC>{banner}</TC>
+
+      <TC>{date}</TC>
 
       <TC align="right">{price}</TC>
 
@@ -69,72 +87,86 @@ const TR = (row: IEconomy<Refuel>) => {
   );
 };
 
-const Card = ({ shade, ...row }: IEconomy<Refuel> & { shade: boolean }) => {
-  const { date, banner, economy, liters, odometer, price } = getRowData(row);
+const InfoCard = ({ shade, ...row }: IEconomy<Refuel> & { shade: boolean }) => {
+  const { selected, changeSelected } = useData();
+  const { id, date, banner, economy, liters, odometer, price } =
+    getRowData(row);
 
   return (
-    <Stack
-      sx={{
-        px: 2,
-        py: 3,
-        gap: 2,
-        backgroundColor: shade ? '#F6F6F6' : 'transparent',
-      }}
+    <CardActionArea
+      onClick={() => changeSelected(row)}
+      sx={{ position: 'relative' }}
     >
       <Stack
-        direction="row"
-        alignItems="flex-end"
-        justifyContent="space-between"
+        sx={{
+          px: 2,
+          py: 3,
+          gap: 2,
+          backgroundColor: shade ? '#F6F6F6' : 'transparent',
+        }}
       >
-        <Stack gap={0.5}>
-          <Typography
-            component="p"
-            variant="subtitle2"
-            color="text.secondary"
-            sx={{ lineHeight: 1.2 }}
-          >
-            {date}
-          </Typography>
+        <Stack
+          direction="row"
+          alignItems="flex-end"
+          justifyContent="space-between"
+        >
+          <Stack gap={0.5}>
+            <Typography
+              component="p"
+              variant="subtitle2"
+              color="text.secondary"
+              sx={{ lineHeight: 1.2 }}
+            >
+              {date}
+            </Typography>
+
+            <Typography
+              component="p"
+              variant="h5"
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 0.5,
+                lineHeight: 1,
+              }}
+            >
+              {banner}
+            </Typography>
+          </Stack>
 
           <Typography
             component="p"
-            variant="h5"
             sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 0.5,
-              lineHeight: 1,
+              ...ubuntu.style,
+              lineHeight: 1.1,
+              fontSize: '1.2rem',
+              fontWeight: 700,
             }}
           >
-            {banner}
+            {economy}
           </Typography>
         </Stack>
 
-        <Typography
-          component="p"
-          sx={{
-            ...ubuntu.style,
-            lineHeight: 1.1,
-            fontSize: '1.2rem',
-            fontWeight: 700,
-          }}
+        <Stack
+          direction="row"
+          alignContent="flex-end"
+          justifyContent="space-between"
         >
-          {economy}
-        </Typography>
+          <Typography>{price}</Typography>
+
+          <Typography>{odometer}</Typography>
+
+          <Typography>{liters}</Typography>
+        </Stack>
       </Stack>
 
-      <Stack
-        direction="row"
-        alignContent="flex-end"
-        justifyContent="space-between"
-      >
-        <Typography>{price}</Typography>
-
-        <Typography>{odometer}</Typography>
-
-        <Typography>{liters}</Typography>
-      </Stack>
-    </Stack>
+      <Grow in={selected?.id === id}>
+        <DoneIcon
+          color="success"
+          sx={{ position: 'absolute', top: 16, right: 16 }}
+        />
+      </Grow>
+    </CardActionArea>
   );
 };
 
@@ -152,7 +184,7 @@ export default function DataTable({ data }: DataTableProps) {
       >
         {data.map((row, i, a) => (
           <Fragment key={row.id}>
-            <Card {...row} shade={i % 2 !== 0} />
+            <InfoCard {...row} shade={i % 2 !== 0} />
 
             {i + 1 !== a.length && <Divider />}
           </Fragment>
@@ -182,11 +214,13 @@ export default function DataTable({ data }: DataTableProps) {
         <Table aria-label="refuels">
           <TableHead>
             <TableRow>
-              <TC>Date</TC>
+              <TC sx={{ width: '1%' }} />
 
               <TC>Odometer</TC>
 
               <TC>Banner</TC>
+
+              <TC>Date</TC>
 
               <TC align="right">Price</TC>
 

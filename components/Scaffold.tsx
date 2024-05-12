@@ -90,7 +90,6 @@ export default function Scaffold({ children }: IParent) {
         component="main"
         sx={{
           px,
-          pb: 4,
           overflowX: 'hidden',
           maxWidth: 'md',
           width: '100%',

@@ -8,11 +8,13 @@ type IDataContext = {
   isLoading: boolean;
   page: number;
   total: number;
-  pageData: Refuel[];
+  pageData: IEconomy<Refuel>[];
   changePage: (
     e: MouseEvent<HTMLButtonElement, MouseEvent> | null,
     page: number
   ) => void;
+  selected?: Refuel;
+  changeSelected: (value: Refuel) => void;
 };
 
 type DataTableProps = { data: IEconomy<Refuel>[] };
