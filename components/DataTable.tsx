@@ -1,8 +1,4 @@
 import { ubuntu } from '@lib/infrastructure/fonts';
-import {
-  CheckCircle as CheckCircleIcon,
-  Verified as VerifiedIcon,
-} from '@mui/icons-material';
 import type { TableCellProps } from '@mui/material';
 import {
   Divider,
@@ -57,23 +53,16 @@ const TR = (row: IEconomy<Refuel>) => {
     getRowData(row);
 
   return (
-    <TableRow
-      sx={{
-        '& td': {
-          color: full ? 'text.primary' : 'grey.500',
-          fontWeight: full ? '400' : '700',
-        },
-      }}
-    >
+    <TableRow className={full ? '' : 'partial'}>
       <TC>{date}</TC>
+
+      <TC>{odometer}</TC>
 
       <TC>{banner}</TC>
 
-      <TC align="right">{odometer}</TC>
+      <TC align="right">{price}</TC>
 
       <TC align="right">{liters}</TC>
-
-      <TC align="right">{price}</TC>
 
       <TC align="right">{economy}</TC>
     </TableRow>
@@ -81,7 +70,7 @@ const TR = (row: IEconomy<Refuel>) => {
 };
 
 const Card = ({ shade, ...row }: IEconomy<Refuel> & { shade: boolean }) => {
-  const { date, banner, full, liters, odometer, price } = getRowData(row);
+  const { date, banner, economy, liters, odometer, price } = getRowData(row);
 
   return (
     <Stack
@@ -97,32 +86,40 @@ const Card = ({ shade, ...row }: IEconomy<Refuel> & { shade: boolean }) => {
         alignItems="flex-end"
         justifyContent="space-between"
       >
+        <Stack gap={0.5}>
+          <Typography
+            component="p"
+            variant="subtitle2"
+            color="text.secondary"
+            sx={{ lineHeight: 1.2 }}
+          >
+            {date}
+          </Typography>
+
+          <Typography
+            component="p"
+            variant="h5"
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 0.5,
+              lineHeight: 1,
+            }}
+          >
+            {banner}
+          </Typography>
+        </Stack>
+
         <Typography
           component="p"
-          variant="h5"
           sx={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 0.5,
-            lineHeight: 1,
+            ...ubuntu.style,
+            lineHeight: 1.1,
+            fontSize: '1.2rem',
+            fontWeight: 700,
           }}
         >
-          {banner}
-
-          {full && (
-            <VerifiedIcon
-              sx={{ width: 16, height: 16, color: 'primary.dark' }}
-            />
-          )}
-        </Typography>
-
-        <Typography
-          component="p"
-          variant="subtitle2"
-          color="text.secondary"
-          sx={{ lineHeight: 1.2 }}
-        >
-          {date}
+          {economy}
         </Typography>
       </Stack>
 
@@ -131,11 +128,11 @@ const Card = ({ shade, ...row }: IEconomy<Refuel> & { shade: boolean }) => {
         alignContent="flex-end"
         justifyContent="space-between"
       >
+        <Typography>{price}</Typography>
+
         <Typography>{odometer}</Typography>
 
         <Typography>{liters}</Typography>
-
-        <Typography>{price}</Typography>
       </Stack>
     </Stack>
   );
@@ -175,6 +172,11 @@ export default function DataTable({ data }: DataTableProps) {
             '&:first-of-type': { pl: 4 },
             '&:last-of-type': { pr: 4 },
           },
+
+          '& tr.partial td': {
+            color: 'grey.500',
+            fontWeight: '700',
+          },
         }}
       >
         <Table aria-label="refuels">
@@ -182,13 +184,13 @@ export default function DataTable({ data }: DataTableProps) {
             <TableRow>
               <TC>Date</TC>
 
+              <TC>Odometer</TC>
+
               <TC>Banner</TC>
 
-              <TC align="right">Odometer</TC>
+              <TC align="right">Price</TC>
 
               <TC align="right">Liters</TC>
-
-              <TC align="right">Price</TC>
 
               <TC align="right">Economy</TC>
             </TableRow>
