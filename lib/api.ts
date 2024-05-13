@@ -1,7 +1,20 @@
 export async function fetcher(url: string) {
-  const request = await fetch(url);
+  const request = await apiCall(url);
 
   return request.json();
+}
+
+export async function apiCall(url: string, method?: string) {
+  const request = await fetch(url, {
+    method,
+    headers: { 'content-type': 'application/json' },
+  });
+
+  if (request.status >= 400) {
+    throw new Error(await request.text());
+  }
+
+  return request;
 }
 
 export function withId(
@@ -28,9 +41,8 @@ export function withError(
     try {
       return await callback(request, params);
     } catch (error: any) {
-      return new Response(null, {
+      return new Response(error.message ?? 'Unknown', {
         status: 400,
-        statusText: error.message,
       });
     }
   };

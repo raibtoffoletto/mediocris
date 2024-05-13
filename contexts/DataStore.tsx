@@ -1,7 +1,8 @@
 'use client';
 
 import { ApiRoutes, RowsPerPage } from '@constants';
-import { fetcher } from '@lib/api';
+import { apiCall, fetcher } from '@lib/api';
+import snackbar from '@lib/snackbar';
 import {
   createContext,
   useCallback,
@@ -18,14 +19,16 @@ const DataContext = createContext<IDataContext>({
   pageData: [],
   changePage: () => undefined,
   changeSelected: () => undefined,
+  deleteSelected: async () => undefined,
 });
 
 export const useData = () => useContext(DataContext);
 
 export function DataProvider({ children }: IParent) {
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [selected, setSelected] = useState<Refuel | undefined>();
-  const { data, isLoading, isValidating } = useSWR<IEconomy<Refuel>[]>(
+  const { data, isLoading, isValidating, mutate } = useSWR<IEconomy<Refuel>[]>(
     ApiRoutes.refuels,
     fetcher
   );
@@ -53,16 +56,41 @@ export function DataProvider({ children }: IParent) {
     []
   );
 
+  const deleteSelected = useCallback(async () => {
+    try {
+      if (!selected) {
+        return;
+      }
+
+      setLoading(true);
+
+      await apiCall(`${ApiRoutes.refuels}/${selected.id}`, 'DELETE');
+
+      await mutate();
+
+      setSelected(undefined);
+
+      if (pageData.length < 2) {
+        setPage(0);
+      }
+    } catch (e: any) {
+      snackbar(e.message, 'error');
+    } finally {
+      setLoading(false);
+    }
+  }, [selected, pageData, mutate]);
+
   return (
     <DataContext.Provider
       value={{
-        isLoading: isLoading || isValidating,
+        isLoading: isLoading || isValidating || loading,
         total: data?.length ?? 0,
         page,
         pageData,
         changePage,
         selected,
         changeSelected,
+        deleteSelected,
       }}
     >
       {children}

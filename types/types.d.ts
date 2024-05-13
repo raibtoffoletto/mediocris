@@ -15,6 +15,7 @@ type IDataContext = {
   ) => void;
   selected?: Refuel;
   changeSelected: (value: Refuel) => void;
+  deleteSelected: () => Promise<void>;
 };
 
 type DataTableProps = { data: IEconomy<Refuel>[] };

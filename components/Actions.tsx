@@ -11,7 +11,7 @@ import {
 import { useData } from '@contexts/DataStore';
 
 export default function Actions() {
-  const { selected } = useData();
+  const { selected, isLoading, deleteSelected } = useData();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
@@ -32,11 +32,15 @@ export default function Actions() {
               ariaLabel="data actions"
               icon={<SpeedDialIcon />}
               sx={{ position: 'absolute', bottom: 0, right: 0 }}
+              FabProps={{
+                disabled: isLoading,
+              }}
             >
               <SpeedDialAction
                 icon={<DeleteIcon />}
                 tooltipOpen
                 tooltipTitle={'Delete'}
+                onClick={deleteSelected}
                 FabProps={{
                   disabled: !selected,
                 }}
