@@ -1,6 +1,7 @@
 'use client';
 
 import { ApiRoutes, RowsPerPage } from '@constants';
+import alertDialog from '@lib/alert';
 import { apiCall, fetcher } from '@lib/api';
 import snackbar from '@lib/snackbar';
 import {
@@ -58,6 +59,10 @@ export function DataProvider({ children }: IParent) {
 
   const deleteSelected = useCallback(async () => {
     try {
+      if (!(await alertDialog({ message: 'This action cannot be undone.' }))) {
+        return;
+      }
+
       if (!selected) {
         return;
       }

@@ -1,5 +1,8 @@
 import { Alert, AlertColor, Snackbar } from '@mui/material';
 import { createRoot } from 'react-dom/client';
+import wait from './wait';
+
+const id = 'snack';
 
 type SnackProps = {
   open: boolean;
@@ -15,21 +18,20 @@ const Snack = ({ open, message, severity }: SnackProps) => (
   </Snackbar>
 );
 
-const wait = (delay: number) => new Promise((res) => setTimeout(res, delay));
-
 export default async function snackbar(message = '', severity?: AlertColor) {
   const container = document.createElement('div');
+  container.setAttribute('id', id);
   document.body.appendChild(container);
 
-  const root = createRoot(container, {
-    identifierPrefix: 'snack',
-  });
+  const root = createRoot(container, { identifierPrefix: id });
 
-  root.render(<Snack open message={message} severity={severity} />);
+  const _message = message.includes('<html') ? '' : message;
+
+  root.render(<Snack open message={_message} severity={severity} />);
 
   await wait(2666);
 
-  root.render(<Snack open={false} message={message} severity={severity} />);
+  root.render(<Snack open={false} message={_message} severity={severity} />);
 
   await wait(333);
 
