@@ -11,21 +11,6 @@ import wait from './wait';
 
 const id = 'alert';
 
-type AlertDialogArgs =
-  | {
-      title: string;
-      message?: string;
-    }
-  | {
-      title?: string;
-      message: string;
-    };
-
-type AlertDialogProps = AlertDialogArgs & {
-  open: boolean;
-  resolve?: (val: boolean) => void;
-};
-
 const AlertDialog = ({ open, message, title, resolve }: AlertDialogProps) => (
   <Dialog
     open={open}

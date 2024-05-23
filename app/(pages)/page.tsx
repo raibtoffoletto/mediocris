@@ -1,14 +1,18 @@
 'use client';
 
-import PageTitle from '@components/PageTitle';
-import { RowsPerPage } from '@constants';
-import { useData } from '@contexts/DataStore';
-import DataTable from '@components/DataTable';
-import { TablePagination } from '@mui/material';
 import Actions from '@components/Actions';
+import DataTable from '@components/DataTable';
+import EntityModal from '@components/EntityModal';
+import PageTitle from '@components/PageTitle';
+import { RowsPerPage, URLParams } from '@constants';
+import { useData } from '@contexts/DataStore';
+import { TablePagination } from '@mui/material';
+import { useSearchParams } from 'next/navigation';
 
 export default function Refuels() {
-  const { isLoading, pageData, total, page, changePage } = useData();
+  const { isLoading, pageData, total, page, selected, changePage } = useData();
+  const searchParams = useSearchParams();
+  const action = searchParams.get(URLParams.key);
 
   return (
     <>
@@ -35,6 +39,10 @@ export default function Refuels() {
       />
 
       <Actions />
+
+      {(action === URLParams.add || action === URLParams.edit) && (
+        <EntityModal record={selected} />
+      )}
     </>
   );
 }

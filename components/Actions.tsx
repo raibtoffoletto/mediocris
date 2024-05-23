@@ -1,18 +1,22 @@
 'use client';
 
-import { Box, SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
+import { URLParams } from '@constants';
+import { useData } from '@contexts/DataStore';
+import getActionQuery from '@lib/getActionQuery';
 import {
+  Add as AddIcon,
   DeleteForever as DeleteIcon,
   Edit as EditIcon,
-  Add as AddIcon,
 } from '@mui/icons-material';
-import { useData } from '@contexts/DataStore';
+import { Box, SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 export default function Actions() {
-  const { selected, isLoading, deleteSelected } = useData();
   const [mounted, setMounted] = useState(false);
+  const { selected, isLoading, deleteSelected } = useData();
+  const router = useRouter();
 
   useEffect(() => setMounted(true), []);
 
@@ -50,6 +54,9 @@ export default function Actions() {
                 icon={<EditIcon />}
                 tooltipOpen
                 tooltipTitle={'Edit'}
+                onClick={() =>
+                  router.push('?' + getActionQuery(URLParams.edit))
+                }
                 FabProps={{
                   disabled: !selected,
                 }}
@@ -59,6 +66,7 @@ export default function Actions() {
                 icon={<AddIcon />}
                 tooltipOpen
                 tooltipTitle={'New'}
+                onClick={() => router.push('?' + getActionQuery(URLParams.add))}
               />
             </SpeedDial>
           </Box>

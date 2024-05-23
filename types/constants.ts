@@ -9,3 +9,9 @@ export enum ApiRoutes {
 }
 
 export const RowsPerPage = 6;
+
+export enum URLParams {
+  key = 'action',
+  edit = 'edit',
+  add = 'add',
+}

@@ -1,11 +1,11 @@
 import { useData } from '@contexts/DataStore';
 import { ubuntu } from '@lib/infrastructure/fonts';
-import type { TableCellProps } from '@mui/material';
+import { CheckCircle as DoneIcon } from '@mui/icons-material';
 import {
+  CardActionArea,
   Checkbox,
   Divider,
   Paper,
-  CardActionArea,
   Stack,
   Table,
   TableBody,
@@ -15,9 +15,8 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { CheckCircle as DoneIcon } from '@mui/icons-material';
-import { Fragment } from 'react';
 import Grow from '@mui/material/Grow';
+import { Fragment } from 'react';
 
 const getDateString = (date: RefuelDate) => {
   const _date = new Date(date.year, date.month, date.day);
@@ -46,8 +45,6 @@ const getRowData = ({
   price: `${price.toFixed(3)} €`,
   economy: !!economy ? `${economy.toFixed(1)} km/l` : null,
 });
-
-type TCProps = TableCellProps & { align?: React.CSSProperties['textAlign'] };
 
 const TC = ({ align, ...props }: TCProps) => (
   <TableCell {...props} sx={{ ...props?.sx, textAlign: align ?? 'left' }} />
@@ -87,7 +84,7 @@ const TR = (row: IEconomy<Refuel>) => {
   );
 };
 
-const InfoCard = ({ shade, ...row }: IEconomy<Refuel> & { shade: boolean }) => {
+const InfoCard = ({ shade, ...row }: InfoCardProps) => {
   const { selected, changeSelected } = useData();
   const { id, date, banner, economy, liters, odometer, price } =
     getRowData(row);
@@ -102,7 +99,8 @@ const InfoCard = ({ shade, ...row }: IEconomy<Refuel> & { shade: boolean }) => {
           px: 2,
           py: 3,
           gap: 2,
-          backgroundColor: shade ? '#F6F6F6' : 'transparent',
+          backgroundColor: ({ palette }) =>
+            shade ? palette.action.hover : 'transparent',
         }}
       >
         <Stack
@@ -179,7 +177,8 @@ export default function DataTable({ data }: DataTableProps) {
           py: 0.5,
           display: { xs: 'flex', sm: 'none' },
           flexDirection: 'column',
-          width: '300px',
+          minWidth: '300px',
+          width: 'calc(100% - 32px)',
         }}
       >
         {data.map((row, i, a) => (
