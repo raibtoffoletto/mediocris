@@ -7,12 +7,26 @@ import PageTitle from '@components/PageTitle';
 import { RowsPerPage, URLParams } from '@constants';
 import { useData } from '@contexts/DataStore';
 import { TablePagination } from '@mui/material';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function Refuels() {
-  const { isLoading, pageData, total, page, selected, changePage } = useData();
+  const {
+    isLoading,
+    pageData,
+    total,
+    page,
+    selected,
+    lastOdometer,
+    lastPrice,
+    changePage,
+  } = useData();
   const searchParams = useSearchParams();
+  const router = useRouter();
   const action = searchParams.get(URLParams.key);
+
+  if (action === URLParams.edit && !selected) {
+    router.push('?');
+  }
 
   return (
     <>
@@ -41,7 +55,9 @@ export default function Refuels() {
       <Actions />
 
       {(action === URLParams.add || action === URLParams.edit) && (
-        <EntityModal record={selected} />
+        <EntityModal
+          record={selected ?? { odometer: lastOdometer, price: lastPrice }}
+        />
       )}
     </>
   );

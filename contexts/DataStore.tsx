@@ -21,6 +21,7 @@ const DataContext = createContext<IDataContext>({
   changePage: () => undefined,
   changeSelected: () => undefined,
   deleteSelected: async () => undefined,
+  saveRecord: async () => undefined,
 });
 
 export const useData = () => useContext(DataContext);
@@ -40,13 +41,22 @@ export function DataProvider({ children }: IParent) {
     [page, data]
   );
 
+  const { lastOdometer, lastPrice } = useMemo(() => {
+    const recent = (data ?? [])?.[0] as IEconomy<Refuel> | undefined;
+
+    return {
+      lastOdometer: recent?.odometer,
+      lastPrice: recent?.price,
+    };
+  }, [data]);
+
   const changePage = useCallback((_: any, p: number) => {
     setPage(p);
     setSelected(undefined);
   }, []);
 
   const changeSelected = useCallback(
-    (value: Refuel) =>
+    (value?: Refuel) =>
       setSelected((_selected) => {
         if (!value || value.id === _selected?.id) {
           return undefined;
@@ -73,6 +83,8 @@ export function DataProvider({ children }: IParent) {
 
       await mutate();
 
+      snackbar('Record deleted!');
+
       setSelected(undefined);
 
       if (pageData.length < 2) {
@@ -85,6 +97,37 @@ export function DataProvider({ children }: IParent) {
     }
   }, [selected, pageData, mutate]);
 
+  const saveRecord = useCallback(
+    async (_record: Refuel) => {
+      try {
+        setLoading(true);
+
+        const isNew = !_record.id;
+
+        if (isNew) {
+          await apiCall(ApiRoutes.refuels, 'PUT', _record);
+        } else {
+          await apiCall(`${ApiRoutes.refuels}/${_record.id}`, 'PATCH', _record);
+        }
+
+        await mutate();
+
+        snackbar('Record saved!');
+
+        setSelected(undefined);
+
+        if (isNew) {
+          setPage(0);
+        }
+      } catch (e: any) {
+        snackbar(e.message, 'error');
+      } finally {
+        setLoading(false);
+      }
+    },
+    [mutate]
+  );
+
   return (
     <DataContext.Provider
       value={{
@@ -96,6 +139,9 @@ export function DataProvider({ children }: IParent) {
         selected,
         changeSelected,
         deleteSelected,
+        saveRecord,
+        lastOdometer,
+        lastPrice,
       }}
     >
       {children}

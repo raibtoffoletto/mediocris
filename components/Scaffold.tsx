@@ -1,13 +1,11 @@
 import { Routes } from '@constants';
 import { sedan } from '@lib/infrastructure/fonts';
 import metadata from '@lib/infrastructure/metadata';
-import { InsertChart as InsertChartIcon } from '@mui/icons-material';
 import {
   AppBar,
   Box,
   Button,
   Container,
-  IconButton,
   Stack,
   Typography,
 } from '@mui/material';
@@ -73,16 +71,18 @@ export default function Scaffold({ children }: IParent) {
               component="h2"
               variant="body2"
               color="text.secondary"
+              sx={{ pb: 0.25 }}
             >{`${metadata.description}`}</Typography>
           </Stack>
 
-          <Box sx={{ display: d('none', 'block'), flexGrow: 1 }} />
+          <Box />
+          {/* <Box sx={{ display: d('none', 'block'), flexGrow: 1 }} /> */}
 
-          <Link href={Routes.charts}>
+          {/* <Link href={Routes.charts}>
             <IconButton color="secondary">
               <InsertChartIcon sx={{ width: icon, height: icon }} />
             </IconButton>
-          </Link>
+          </Link> */}
         </Container>
       </AppBar>
 

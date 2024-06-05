@@ -4,10 +4,15 @@ export async function fetcher(url: string) {
   return request.json();
 }
 
-export async function apiCall(url: string, method?: string) {
+export async function apiCall(
+  url: string,
+  method?: string,
+  payload?: Record<string, any>
+) {
   const request = await fetch(url, {
     method,
     headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(payload),
   });
 
   if (request.status >= 400) {

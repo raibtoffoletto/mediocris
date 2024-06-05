@@ -15,7 +15,7 @@ import { createPortal } from 'react-dom';
 
 export default function Actions() {
   const [mounted, setMounted] = useState(false);
-  const { selected, isLoading, deleteSelected } = useData();
+  const { selected, isLoading, deleteSelected, changeSelected } = useData();
   const router = useRouter();
 
   useEffect(() => setMounted(true), []);
@@ -66,7 +66,11 @@ export default function Actions() {
                 icon={<AddIcon />}
                 tooltipOpen
                 tooltipTitle={'New'}
-                onClick={() => router.push('?' + getActionQuery(URLParams.add))}
+                onClick={() => {
+                  changeSelected();
+
+                  router.push('?' + getActionQuery(URLParams.add));
+                }}
               />
             </SpeedDial>
           </Box>

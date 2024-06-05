@@ -1,5 +1,6 @@
 import type { Database, RunResult } from 'better-sqlite3';
 import sqlite3 from 'better-sqlite3';
+import { join } from 'path';
 
 let _db: Database | undefined = undefined;
 
@@ -18,7 +19,7 @@ async function migrate(db: Database) {
 
 async function getDb(): Promise<Database> {
   if (!_db) {
-    _db = new sqlite3('app-data.db', {
+    _db = new sqlite3(join(process.env['DB_PATH'] || '.', 'app-data.db'), {
       verbose: (...args: any[]) =>
         process.env.NODE_ENV === 'production'
           ? undefined

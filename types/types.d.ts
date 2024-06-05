@@ -14,8 +14,11 @@ type IDataContext = {
     page: number
   ) => void;
   selected?: Refuel;
-  changeSelected: (value: Refuel) => void;
+  changeSelected: (value?: Refuel) => void;
   deleteSelected: () => Promise<void>;
+  saveRecord: (data: Refuel) => Promise<void>;
+  lastOdometer?: number;
+  lastPrice?: number;
 };
 
 type DataTableProps = { data: IEconomy<Refuel>[] };
@@ -39,4 +42,4 @@ type AlertDialogProps = AlertDialogArgs & {
   resolve?: (val: boolean) => void;
 };
 
-type RefuelFormProps = { record?: Refuel };
+type RefuelFormProps = { record?: Partial<Refuel> };
