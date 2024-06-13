@@ -1,5 +1,10 @@
+import Scaffold from '@components/Scaffold';
 import { DataProvider } from '@contexts/DataStore';
 
 export default function AppProviders({ children }: IParent) {
-  return <DataProvider>{children}</DataProvider>;
+  return (
+    <Scaffold>
+      <DataProvider>{children}</DataProvider>
+    </Scaffold>
+  );
 }

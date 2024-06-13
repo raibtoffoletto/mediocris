@@ -2,7 +2,11 @@ type IParent = {
   children?: React.ReactNode;
 };
 
-type PageTitleProps = IParent & { accent?: string; isLoading?: boolean };
+type PageTitleProps = IParent & {
+  accent?: string;
+  isLoading?: boolean;
+  dense?: boolean;
+};
 
 type IDataContext = {
   isLoading: boolean;
@@ -43,3 +47,9 @@ type AlertDialogProps = AlertDialogArgs & {
 };
 
 type RefuelFormProps = { record?: Partial<Refuel> };
+
+type MenuItemProps = {
+  onClick: () => void;
+  label: string;
+  Icon: React.ReactNode;
+};

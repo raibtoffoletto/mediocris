@@ -1,4 +1,5 @@
 import { Routes } from '@constants';
+import d from '@lib/dynamic';
 import { sedan } from '@lib/infrastructure/fonts';
 import metadata from '@lib/infrastructure/metadata';
 import {
@@ -11,12 +12,9 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
-
-const d = (xs: number | string, sm: number | string) => ({ xs, sm });
+import Menu from './Menu';
 
 const px = d(1, 2);
-
-const icon = d(24, 32);
 
 export default function Scaffold({ children }: IParent) {
   return (
@@ -75,14 +73,9 @@ export default function Scaffold({ children }: IParent) {
             >{`${metadata.description}`}</Typography>
           </Stack>
 
-          <Box />
-          {/* <Box sx={{ display: d('none', 'block'), flexGrow: 1 }} /> */}
+          <Box sx={{ display: d('none', 'block'), flexGrow: 1 }} />
 
-          {/* <Link href={Routes.charts}>
-            <IconButton color="secondary">
-              <InsertChartIcon sx={{ width: icon, height: icon }} />
-            </IconButton>
-          </Link> */}
+          <Menu />
         </Container>
       </AppBar>
 
