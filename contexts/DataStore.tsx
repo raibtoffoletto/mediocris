@@ -2,8 +2,8 @@
 
 import { ApiRoutes, RowsPerPage } from '@constants';
 import alertDialog from '@lib/alert';
-import { apiCall, fetcher } from '@lib/api';
 import snackbar from '@lib/snackbar';
+import useApi from '@lib/useApi';
 import {
   createContext,
   useCallback,
@@ -30,6 +30,7 @@ export function DataProvider({ children }: IParent) {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [selected, setSelected] = useState<Refuel | undefined>();
+  const { callApi, fetcher } = useApi();
   const { data, isLoading, isValidating, mutate } = useSWR<IEconomy<Refuel>[]>(
     ApiRoutes.refuels,
     fetcher
@@ -69,17 +70,17 @@ export function DataProvider({ children }: IParent) {
 
   const deleteSelected = useCallback(async () => {
     try {
-      if (!(await alertDialog({ message: 'This action cannot be undone.' }))) {
+      if (!selected) {
         return;
       }
 
-      if (!selected) {
+      if (!(await alertDialog({ message: 'This action cannot be undone.' }))) {
         return;
       }
 
       setLoading(true);
 
-      await apiCall(`${ApiRoutes.refuels}/${selected.id}`, 'DELETE');
+      await callApi(`${ApiRoutes.refuels}/${selected.id}`, 'DELETE');
 
       await mutate();
 
@@ -95,7 +96,7 @@ export function DataProvider({ children }: IParent) {
     } finally {
       setLoading(false);
     }
-  }, [selected, pageData, mutate]);
+  }, [selected, pageData, mutate, callApi]);
 
   const saveRecord = useCallback(
     async (_record: Refuel) => {
@@ -105,9 +106,9 @@ export function DataProvider({ children }: IParent) {
         const isNew = !_record.id;
 
         if (isNew) {
-          await apiCall(ApiRoutes.refuels, 'PUT', _record);
+          await callApi(ApiRoutes.refuels, 'PUT', _record);
         } else {
-          await apiCall(`${ApiRoutes.refuels}/${_record.id}`, 'PATCH', _record);
+          await callApi(`${ApiRoutes.refuels}/${_record.id}`, 'PATCH', _record);
         }
 
         await mutate();
@@ -125,7 +126,7 @@ export function DataProvider({ children }: IParent) {
         setLoading(false);
       }
     },
-    [mutate]
+    [mutate, callApi]
   );
 
   return (

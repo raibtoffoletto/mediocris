@@ -1,7 +1,7 @@
 import { ApiRoutes } from '@constants';
 import { useData } from '@contexts/DataStore';
 import alertDialog from '@lib/alert';
-import { fetcher } from '@lib/api';
+import useApi from '@lib/useApi';
 import {
   Autocomplete,
   Button,
@@ -114,6 +114,8 @@ export default function RefuelForm(props: RefuelFormProps) {
   const fullScreen = useMediaQuery(useTheme().breakpoints.down('sm'));
   const router = useRouter();
   const { saveRecord } = useData();
+
+  const { fetcher } = useApi();
 
   const { data: existingBanners, isLoading } = useSWR<string[]>(
     ApiRoutes.banners,

@@ -19,12 +19,20 @@ async function migrate(db: Database) {
 
 async function getDb(): Promise<Database> {
   if (!_db) {
-    _db = new sqlite3(join(process.env['DB_PATH'] || '.', 'app-data.db'), {
-      verbose: (...args: any[]) =>
-        process.env.NODE_ENV === 'production'
-          ? undefined
-          : console.debug(...args),
-    });
+    _db = new sqlite3(
+      join(
+        process.env.NODE_ENV !== 'production'
+          ? '.'
+          : process.env['DB_PATH'] || '.',
+        'app-data.db'
+      ),
+      {
+        verbose: (...args: any[]) =>
+          process.env.NODE_ENV === 'production'
+            ? undefined
+            : console.debug(...args),
+      }
+    );
 
     await migrate(_db);
   }

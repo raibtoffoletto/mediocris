@@ -1,9 +1,10 @@
 import { Box, CircularProgress, Typography } from '@mui/material';
 
 export default function PageTitle({
-  children,
+  dense,
   accent,
   isLoading,
+  children,
 }: PageTitleProps) {
   return (
     <>
@@ -43,7 +44,7 @@ export default function PageTitle({
         )}
       </Typography>
 
-      <Box sx={{ pb: 2 }} />
+      {!dense && <Box sx={{ pb: 2 }} />}
     </>
   );
 }

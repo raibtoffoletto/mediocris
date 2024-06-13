@@ -1,27 +1,3 @@
-export async function fetcher(url: string) {
-  const request = await apiCall(url);
-
-  return request.json();
-}
-
-export async function apiCall(
-  url: string,
-  method?: string,
-  payload?: Record<string, any>
-) {
-  const request = await fetch(url, {
-    method,
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify(payload),
-  });
-
-  if (request.status >= 400) {
-    throw new Error(await request.text());
-  }
-
-  return request;
-}
-
 export function withId(
   { params }: RequestParams,
   callback: (id: number) => Promise<Response> | Response
