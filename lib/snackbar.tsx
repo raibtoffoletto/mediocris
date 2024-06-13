@@ -8,11 +8,17 @@ type SnackProps = {
   open: boolean;
   message: string;
   severity?: AlertColor;
+  onClose: () => void;
 };
 
-const Snack = ({ open, message, severity }: SnackProps) => (
+const Snack = ({ open, message, severity, onClose }: SnackProps) => (
   <Snackbar open={open}>
-    <Alert severity={severity} variant="filled">
+    <Alert
+      severity={severity}
+      variant="filled"
+      onClose={onClose}
+      sx={{ '& .MuiAlert-message': { p: 0, lineHeight: '36px' } }}
+    >
       {message}
     </Alert>
   </Snackbar>
@@ -27,11 +33,31 @@ export default async function snackbar(message = '', severity?: AlertColor) {
 
   const _message = message.includes('<html') ? '' : message;
 
-  root.render(<Snack open message={_message} severity={severity} />);
+  await new Promise<void>((resolve) => {
+    const timeout = setTimeout(resolve, 3333);
 
-  await wait(2666);
+    root.render(
+      <Snack
+        open
+        message={_message}
+        severity={severity}
+        onClose={() => {
+          clearTimeout(timeout);
 
-  root.render(<Snack open={false} message={_message} severity={severity} />);
+          resolve();
+        }}
+      />
+    );
+  });
+
+  root.render(
+    <Snack
+      open={false}
+      message={_message}
+      severity={severity}
+      onClose={() => undefined}
+    />
+  );
 
   await wait(333);
 
