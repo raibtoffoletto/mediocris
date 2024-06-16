@@ -14,7 +14,7 @@ export enum ApiRoutes {
   refuels = '/api/refuel',
 }
 
-export const RowsPerPage = 6;
+export const RowsPerPage = 7;
 
 export enum URLParams {
   key = 'action',

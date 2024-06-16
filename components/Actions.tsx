@@ -44,7 +44,7 @@ export default function Actions() {
                 icon={<DeleteIcon />}
                 tooltipOpen
                 tooltipTitle={'Delete'}
-                onClick={deleteSelected}
+                onClick={() => (!selected ? undefined : deleteSelected())}
                 FabProps={{
                   disabled: !selected,
                 }}
@@ -55,7 +55,9 @@ export default function Actions() {
                 tooltipOpen
                 tooltipTitle={'Edit'}
                 onClick={() =>
-                  router.push('?' + getActionQuery(URLParams.edit))
+                  !selected
+                    ? undefined
+                    : router.push('?' + getActionQuery(URLParams.edit))
                 }
                 FabProps={{
                   disabled: !selected,

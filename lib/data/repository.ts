@@ -80,7 +80,7 @@ function mapEconomy(row: Refuel, index: number, table: Refuel[]) {
   const sum = range.reduce(
     (a, b) => ({
       odometer: Math.min(a.odometer, b.odometer),
-      liters: a.liters + b.liters,
+      liters: a.liters + (b.full ? 0 : b.liters),
     }),
     {
       odometer: range[0].odometer,
