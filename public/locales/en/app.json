@@ -1,0 +1,14 @@
+{
+  "not_found": {
+    "title": "Oops!",
+    "message": "The page you are looking for is far out of our mediocrity.",
+    "link": "back"
+  },
+
+  "sign_in": {
+    "password": "Password",
+    "show": "show",
+    "hide": "hide",
+    "button": "sign in"
+  }
+}

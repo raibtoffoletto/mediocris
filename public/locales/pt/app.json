@@ -1,0 +1,14 @@
+{
+  "not_found": {
+    "title": "Oops!",
+    "message": "Cade!? Sumiu!? \n Provavelmente nunca existiu!",
+    "link": "voltar"
+  },
+
+  "sign_in": {
+    "password": "Senha",
+    "show": "mostrar",
+    "hide": "esconder",
+    "button": "Entrar"
+  }
+}

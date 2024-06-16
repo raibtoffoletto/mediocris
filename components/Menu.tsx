@@ -1,33 +1,56 @@
 'use client';
 
-import { ApiRoutes } from '@constants';
+import { ApiRoutes, languageLabel, languages } from '@constants';
 import d from '@lib/dynamic';
 import useApi from '@lib/useApi';
 import {
   InsertChart as InsertChartIcon,
   Logout as LogoutIcon,
   Menu as MenuIcon,
+  Translate as TranslateIcon,
 } from '@mui/icons-material';
 import {
+  Divider,
   IconButton,
   ListItemIcon,
   ListItemText,
   Menu as MuiMenu,
   MenuItem as MuiMenuItem,
 } from '@mui/material';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 const icon = d(24, 32);
 
-const MenuItem = ({ onClick, label, Icon }: MenuItemProps) => (
-  <MuiMenuItem onClick={onClick}>
-    <ListItemText sx={{ flexGrow: 1 }}>{label}</ListItemText>
+const MenuItem = ({
+  onClick,
+  label,
+  disabled,
+  Icon,
+  dense,
+  selected,
+}: MenuItemProps) => (
+  <MuiMenuItem
+    onClick={onClick}
+    disabled={disabled}
+    dense={dense}
+    selected={selected}
+  >
+    <ListItemText sx={{ flexGrow: 1, pl: dense ? 1.5 : 0 }}>
+      {label}
+    </ListItemText>
 
-    <ListItemIcon sx={{ minWidth: '0 !important' }}>{Icon}</ListItemIcon>
+    {Icon && (
+      <ListItemIcon sx={{ minWidth: '0 !important' }}>{Icon}</ListItemIcon>
+    )}
   </MuiMenuItem>
 );
 
 export default function Menu() {
+  const path = usePathname();
+  const router = useRouter();
+  const { lang } = useParams();
+  const [submenu, setSubmenu] = useState(false);
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
   const { callApi } = useApi();
 
@@ -41,11 +64,35 @@ export default function Menu() {
     await callApi(ApiRoutes.auth, 'DELETE');
   };
 
-  const items: MenuItemProps[] = [
+  const changeLanguage = (_lang: string) => {
+    setSubmenu(false);
+    handleClose();
+
+    console.log(path.replace(`${lang}`, _lang));
+    router.push(path.replace(`${lang}`, _lang));
+  };
+
+  const items: (MenuItemProps | DividerProps)[] = [
+    {
+      label: 'Languages',
+      onClick: () => setSubmenu((_) => !_),
+      Icon: <TranslateIcon fontSize="small" />,
+    },
+    ...(submenu
+      ? languages.map((l) => ({
+          label: languageLabel[l],
+          onClick: () => changeLanguage(l),
+          dense: true,
+          selected: l === lang,
+          disabled: l === lang,
+        }))
+      : []),
+    { divider: true },
     {
       label: 'Charts',
       onClick: () => undefined,
       Icon: <InsertChartIcon />,
+      disabled: true,
     },
     {
       label: 'Sign out',
@@ -67,7 +114,7 @@ export default function Menu() {
         onClose={handleClose}
         MenuListProps={{
           'aria-labelledby': 'basic-button',
-          sx: { minWidth: 128 },
+          sx: { minWidth: 160 },
         }}
         anchorOrigin={{
           vertical: 'bottom',
@@ -78,9 +125,13 @@ export default function Menu() {
           horizontal: 'right',
         }}
       >
-        {items.map((i) => (
-          <MenuItem key={i.label} {...i} />
-        ))}
+        {items.map((props, i) =>
+          'divider' in props ? (
+            <Divider key={i} />
+          ) : (
+            <MenuItem key={props.label} {...props} />
+          )
+        )}
       </MuiMenu>
     </>
   );

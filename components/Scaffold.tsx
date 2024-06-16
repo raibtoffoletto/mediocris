@@ -31,16 +31,14 @@ export default function Scaffold({ children }: IParent) {
             justifyContent: { xs: 'space-between', sm: 'flex-start' },
           }}
         >
-          <Link href={Routes.main}>
-            <Button sx={{ p: 0 }}>
-              <Image
-                alt="mediocris logo"
-                src="/mediocris-256.png"
-                width={64}
-                height={64}
-              />
-            </Button>
-          </Link>
+          <Button href={Routes.main} sx={{ p: 0 }} LinkComponent={Link}>
+            <Image
+              alt="mediocris logo"
+              src="/mediocris-256.png"
+              width={64}
+              height={64}
+            />
+          </Button>
 
           <Stack
             sx={{

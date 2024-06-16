@@ -1,15 +1,17 @@
 'use client';
 
-import { ApiRoutes, Input } from '@constants';
+import { ApiRoutes, Input, i18nNS } from '@constants';
+import { useTranslation } from '@lib/i18n/client';
 import snackbar from '@lib/snackbar';
 import useApi from '@lib/useApi';
 import { Button, Stack, TextField } from '@mui/material';
 import Image from 'next/image';
 import { useState } from 'react';
 
-export default function SignIn() {
+export default function SignIn({ params: { lang } }: IParams) {
   const [loading, setLoading] = useState(false);
   const [type, setType] = useState<string>(Input.pass);
+  const t = useTranslation(lang, i18nNS.App);
 
   const { callApi } = useApi();
 
@@ -55,7 +57,7 @@ export default function SignIn() {
         margin="dense"
         size="small"
         variant="outlined"
-        label="Password"
+        label={t('sign_in.password', 'Password')}
         name="password"
         id="password"
         type={type}
@@ -76,14 +78,16 @@ export default function SignIn() {
                 setType((t) => (t === Input.pass ? Input.text : Input.pass))
               }
             >
-              {type === Input.pass ? 'show' : 'hide'}
+              {type === Input.pass
+                ? t('sign_in.show', 'show')
+                : t('sign_in.hide', 'hide')}
             </Button>
           ),
         }}
       />
 
       <Button type="submit" variant="outlined" disabled={loading}>
-        Sign In
+        {t('sign_in.button', 'Sign In')}
       </Button>
     </Stack>
   );

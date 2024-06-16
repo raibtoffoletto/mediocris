@@ -2,6 +2,13 @@ type IParent = {
   children?: React.ReactNode;
 };
 
+type IParams<T = {}> = T & {
+  params: {
+    [x: string]: string;
+    lang: string;
+  };
+};
+
 type PageTitleProps = IParent & {
   accent?: string;
   isLoading?: boolean;
@@ -51,5 +58,12 @@ type RefuelFormProps = { record?: Partial<Refuel> };
 type MenuItemProps = {
   onClick: () => void;
   label: string;
-  Icon: React.ReactNode;
+  Icon?: React.ReactNode;
+  disabled?: boolean;
+  selected?: boolean;
+  dense?: boolean;
+};
+
+type DividerProps = {
+  divider: boolean;
 };

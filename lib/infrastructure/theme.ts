@@ -1,11 +1,8 @@
 'use client';
 
+import { primaryColor, secondaryColor } from '@constants';
 import { lato } from '@lib/infrastructure/fonts';
 import { createTheme } from '@mui/material/styles';
-
-export const primaryColor = '#259358';
-
-export const secondaryColor = '#932560';
 
 const theme = createTheme({
   palette: {
