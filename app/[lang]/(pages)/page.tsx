@@ -4,12 +4,13 @@ import Actions from '@components/Actions';
 import DataTable from '@components/DataTable';
 import EntityModal from '@components/EntityModal';
 import PageTitle from '@components/PageTitle';
-import { RowsPerPage, URLParams } from '@constants';
+import { RowsPerPage, URLParams, i18nNS } from '@constants';
 import { useData } from '@contexts/DataStore';
+import { useTranslation } from '@lib/i18n/client';
 import { TablePagination } from '@mui/material';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function Refuels() {
+export default function Refuels({ params }: IParams) {
   const {
     isLoading,
     pageData,
@@ -20,6 +21,8 @@ export default function Refuels() {
     lastPrice,
     changePage,
   } = useData();
+
+  const t = useTranslation(params.lang, i18nNS.Main);
   const searchParams = useSearchParams();
   const router = useRouter();
   const action = searchParams.get(URLParams.key);
@@ -30,9 +33,9 @@ export default function Refuels() {
 
   return (
     <>
-      <PageTitle isLoading={isLoading}>Refuels</PageTitle>
+      <PageTitle isLoading={isLoading}>{t('title', 'Refuels')}</PageTitle>
 
-      <DataTable data={pageData} />
+      <DataTable data={pageData} params={params} />
 
       <TablePagination
         rowsPerPageOptions={[]}
@@ -52,10 +55,11 @@ export default function Refuels() {
         }}
       />
 
-      <Actions />
+      <Actions params={params} />
 
       {(action === URLParams.add || action === URLParams.edit) && (
         <EntityModal
+          params={params}
           record={selected ?? { odometer: lastOdometer, price: lastPrice }}
         />
       )}

@@ -1,6 +1,9 @@
-import { ApiRoutes } from '@constants';
+'use client';
+
+import { ApiRoutes, i18nNS } from '@constants';
 import { useData } from '@contexts/DataStore';
 import alertDialog from '@lib/alert';
+import { useTranslation } from '@lib/i18n/client';
 import useApi from '@lib/useApi';
 import {
   Autocomplete,
@@ -62,7 +65,7 @@ function mapToDate(date: RefuelDate): Dayjs {
   return dayjs(new Date(date.year, date.month, date.day));
 }
 
-function getRefuel({ record }: RefuelFormProps): Refuel {
+function getRefuel(record?: Partial<Refuel>): Refuel {
   return {
     banner: record?.banner ?? '',
     full: record?.full ?? false,
@@ -109,7 +112,11 @@ function isEqual(
   );
 }
 
-export default function RefuelForm(props: RefuelFormProps) {
+export default function RefuelForm({
+  params: { lang },
+  record,
+}: IParams<RefuelFormProps>) {
+  const t = useTranslation(lang, i18nNS.Main);
   const formRef = useRef();
   const fullScreen = useMediaQuery(useTheme().breakpoints.down('sm'));
   const router = useRouter();
@@ -123,8 +130,8 @@ export default function RefuelForm(props: RefuelFormProps) {
   );
 
   const { id, banner, date, full, liters, odometer, price } = useMemo(
-    () => getRefuel(props),
-    [props]
+    () => getRefuel(record),
+    [record]
   );
 
   const handleClose = async (skip?: boolean) => {
@@ -135,7 +142,9 @@ export default function RefuelForm(props: RefuelFormProps) {
 
     if (!(skip ?? equal)) {
       if (
-        !(await alertDialog({ message: 'You will loose any changes made.' }))
+        !(await alertDialog({
+          message: `${t('modal.alert', 'You will loose any changes made.')}`,
+        }))
       ) {
         return;
       }
@@ -172,14 +181,16 @@ export default function RefuelForm(props: RefuelFormProps) {
       }}
     >
       <DialogTitle>
-        {`${!!props.record ? 'Edit' : 'Add new'} record`}
+        {!!record?.banner
+          ? t('modal.title_edit', 'Edit')
+          : t('modal.title_new', 'Add')}
       </DialogTitle>
 
       <DialogContent sx={{ pb: 1 }}>
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
           <DatePicker
             name="date"
-            label="Date"
+            label={t('table.date', 'Date')}
             defaultValue={mapToDate(date)}
             slotProps={{
               textField: {
@@ -201,14 +212,19 @@ export default function RefuelForm(props: RefuelFormProps) {
           options={existingBanners ?? []}
           value={banner}
           renderInput={(params) => (
-            <BasicField {...params} id="banner" name="banner" label="Banner" />
+            <BasicField
+              {...params}
+              id="banner"
+              name="banner"
+              label={t('table.banner', 'Banner')}
+            />
           )}
         />
 
         <BasicField
           id="liters"
           name="liters"
-          label="Liters"
+          label={t('table.liters', 'Liters')}
           type="number"
           defaultValue={liters || ''}
           step={0.01}
@@ -218,7 +234,7 @@ export default function RefuelForm(props: RefuelFormProps) {
         <BasicField
           id="price"
           name="price"
-          label="Price"
+          label={t('table.price', 'Price')}
           type="number"
           defaultValue={price || ''}
           step={0.001}
@@ -228,7 +244,7 @@ export default function RefuelForm(props: RefuelFormProps) {
         <BasicField
           id="odometer"
           name="odometer"
-          label="Odometer"
+          label={t('table.odometer', 'Odometer')}
           type="number"
           defaultValue={odometer || ''}
           unity="km"
@@ -237,7 +253,7 @@ export default function RefuelForm(props: RefuelFormProps) {
         <FormControlLabel
           id="full"
           name="full"
-          label="Full tank"
+          label={t('modal.full_tank', 'Full tank')}
           labelPlacement="start"
           control={<Switch defaultChecked={full} />}
           sx={{ mt: 2, mx: 0, width: '100%' }}
@@ -250,11 +266,11 @@ export default function RefuelForm(props: RefuelFormProps) {
           variant="outlined"
           color="inherit"
         >
-          Cancel
+          {t('modal.cancel', 'Cancel')}
         </Button>
 
         <Button type="submit" variant="contained">
-          Save
+          {t('modal.save', 'Save')}
         </Button>
       </DialogActions>
     </Dialog>

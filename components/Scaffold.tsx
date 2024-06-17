@@ -1,5 +1,6 @@
-import { Routes } from '@constants';
+import { Routes, i18nNS } from '@constants';
 import d from '@lib/dynamic';
+import { useTranslation } from '@lib/i18n/server';
 import { sedan } from '@lib/infrastructure/fonts';
 import metadata from '@lib/infrastructure/metadata';
 import {
@@ -16,7 +17,12 @@ import Menu from './Menu';
 
 const px = d(1, 2);
 
-export default function Scaffold({ children }: IParent) {
+export default async function Scaffold({
+  children,
+  params: { lang },
+}: IParams<IParent>) {
+  const t = await useTranslation(lang, i18nNS.App);
+
   return (
     <>
       <AppBar color="inherit">
@@ -68,7 +74,9 @@ export default function Scaffold({ children }: IParent) {
               variant="body2"
               color="text.secondary"
               sx={{ pb: 0.25 }}
-            >{`${metadata.description}`}</Typography>
+            >
+              {t('description', `${metadata.description}`)}
+            </Typography>
           </Stack>
 
           <Box sx={{ display: d('none', 'block'), flexGrow: 1 }} />

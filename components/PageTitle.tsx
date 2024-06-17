@@ -16,6 +16,7 @@ export default function PageTitle({
           lineHeight: 1.75,
           fontWeight: 300,
           position: 'relative',
+          fontSize: 'min(calc(2rem + 2vw), 3.5rem)',
 
           '&::after': {
             content: "''",

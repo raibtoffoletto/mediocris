@@ -1,7 +1,8 @@
 'use client';
 
-import { ApiRoutes, languageLabel, languages } from '@constants';
+import { ApiRoutes, i18nNS, languageLabel, languages } from '@constants';
 import d from '@lib/dynamic';
+import { useTranslation } from '@lib/i18n/client';
 import useApi from '@lib/useApi';
 import {
   InsertChart as InsertChartIcon,
@@ -52,6 +53,7 @@ export default function Menu() {
   const { lang } = useParams();
   const [submenu, setSubmenu] = useState(false);
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
+  const t = useTranslation(`${lang}`, i18nNS.App);
   const { callApi } = useApi();
 
   const handleClose = () => {
@@ -74,7 +76,7 @@ export default function Menu() {
 
   const items: (MenuItemProps | DividerProps)[] = [
     {
-      label: 'Languages',
+      label: `${t('menu.languages', 'Languages')}`,
       onClick: () => setSubmenu((_) => !_),
       Icon: <TranslateIcon fontSize="small" />,
     },
@@ -89,13 +91,13 @@ export default function Menu() {
       : []),
     { divider: true },
     {
-      label: 'Charts',
+      label: `${t('menu.charts', 'Charts')}`,
       onClick: () => undefined,
       Icon: <InsertChartIcon />,
       disabled: true,
     },
     {
-      label: 'Sign out',
+      label: `${t('menu.sign_out', 'Sign out')}`,
       onClick: signOut,
       Icon: <LogoutIcon fontSize="small" />,
     },

@@ -1,4 +1,5 @@
 import { languages } from '@constants';
+import I18nProvider from '@contexts/I18nProvider';
 import Theme from '@contexts/Theme';
 import { dir } from 'i18next';
 
@@ -15,7 +16,9 @@ export default function RootLayout({
   return (
     <html lang={lang} dir={dir(lang)}>
       <body>
-        <Theme>{children}</Theme>
+        <Theme>
+          <I18nProvider params={{ lang }}>{children}</I18nProvider>
+        </Theme>
       </body>
     </html>
   );

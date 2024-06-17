@@ -1,4 +1,6 @@
 {
+  "description": "Fuel and economy tracker",
+
   "not_found": {
     "title": "Oops!",
     "message": "The page you are looking for is far out of our mediocrity.",
@@ -10,5 +12,11 @@
     "show": "show",
     "hide": "hide",
     "button": "sign in"
+  },
+
+  "menu": {
+    "languages": "Languages",
+    "charts": "Charts",
+    "sign_out": "Sign out"
   }
 }

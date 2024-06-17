@@ -1,7 +1,8 @@
 'use client';
 
-import { ApiRoutes, RowsPerPage } from '@constants';
+import { ApiRoutes, RowsPerPage, i18nNS } from '@constants';
 import alertDialog from '@lib/alert';
+import { useTranslation } from '@lib/i18n/client';
 import snackbar from '@lib/snackbar';
 import useApi from '@lib/useApi';
 import {
@@ -26,7 +27,8 @@ const DataContext = createContext<IDataContext>({
 
 export const useData = () => useContext(DataContext);
 
-export function DataProvider({ children }: IParent) {
+export function DataProvider({ children, params: { lang } }: IParams<IParent>) {
+  const t = useTranslation(lang, i18nNS.Main);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [selected, setSelected] = useState<Refuel | undefined>();
@@ -74,7 +76,11 @@ export function DataProvider({ children }: IParent) {
         return;
       }
 
-      if (!(await alertDialog({ message: 'This action cannot be undone.' }))) {
+      if (
+        !(await alertDialog({
+          message: `${t('provider.alert', 'This action cannot be undone.')}`,
+        }))
+      ) {
         return;
       }
 
@@ -84,7 +90,7 @@ export function DataProvider({ children }: IParent) {
 
       await mutate();
 
-      snackbar('Record deleted!');
+      snackbar(`${t('provider.deleted', 'Record deleted!')}`);
 
       setSelected(undefined);
 
@@ -113,7 +119,7 @@ export function DataProvider({ children }: IParent) {
 
         await mutate();
 
-        snackbar('Record saved!');
+        snackbar(`${t('provider.saved', 'Record saved!')}`);
 
         setSelected(undefined);
 

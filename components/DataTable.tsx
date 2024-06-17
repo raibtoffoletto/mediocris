@@ -1,4 +1,8 @@
+'use client';
+
+import { i18nNS } from '@constants';
 import { useData } from '@contexts/DataStore';
+import { useTranslation } from '@lib/i18n/client';
 import { ubuntu } from '@lib/infrastructure/fonts';
 import { CheckCircle as DoneIcon } from '@mui/icons-material';
 import {
@@ -18,28 +22,24 @@ import {
 import Grow from '@mui/material/Grow';
 import { Fragment } from 'react';
 
-const getDateString = (date: RefuelDate) => {
+const getDateString = (date: RefuelDate, lang: string) => {
   const _date = new Date(date.year, date.month, date.day);
 
-  return `${new Intl.DateTimeFormat(undefined, {
+  return `${new Intl.DateTimeFormat(lang, {
     day: '2-digit',
-  }).format(_date)} ${new Intl.DateTimeFormat(undefined, {
+  }).format(_date)} ${new Intl.DateTimeFormat(lang, {
     month: 'short',
   })
     .format(_date)
     .toLowerCase()} ${date.year}`;
 };
 
-const getRowData = ({
-  date,
-  liters,
-  odometer,
-  price,
-  economy,
-  ...row
-}: IEconomy<Refuel>) => ({
+const getRowData = (
+  lang: string,
+  { date, liters, odometer, price, economy, ...row }: IEconomy<Refuel>
+) => ({
   ...row,
-  date: getDateString(date),
+  date: getDateString(date, lang),
   liters: `${liters.toFixed(2)} l`,
   odometer: `${odometer} km`,
   price: `${price.toFixed(3)} €`,
@@ -50,10 +50,10 @@ const TC = ({ align, ...props }: TCProps) => (
   <TableCell {...props} sx={{ ...props?.sx, textAlign: align ?? 'left' }} />
 );
 
-const TR = (row: IEconomy<Refuel>) => {
+const TR = ({ lang, ...row }: IEconomy<Refuel> & { lang: string }) => {
   const { selected, changeSelected } = useData();
   const { id, date, banner, full, liters, odometer, price, economy } =
-    getRowData(row);
+    getRowData(lang, row);
 
   const isSelected = selected?.id === id;
 
@@ -84,10 +84,16 @@ const TR = (row: IEconomy<Refuel>) => {
   );
 };
 
-const InfoCard = ({ shade, ...row }: InfoCardProps) => {
+const InfoCard = ({
+  lang,
+  shade,
+  ...row
+}: InfoCardProps & { lang: string }) => {
   const { selected, changeSelected } = useData();
-  const { id, date, banner, economy, liters, odometer, price } =
-    getRowData(row);
+  const { id, date, banner, economy, liters, odometer, price } = getRowData(
+    lang,
+    row
+  );
 
   return (
     <CardActionArea
@@ -168,7 +174,12 @@ const InfoCard = ({ shade, ...row }: InfoCardProps) => {
   );
 };
 
-export default function DataTable({ data }: DataTableProps) {
+export default function DataTable({
+  data,
+  params: { lang },
+}: IParams<DataTableProps>) {
+  const t = useTranslation(lang, i18nNS.Main);
+
   return (
     <>
       <Paper
@@ -183,7 +194,7 @@ export default function DataTable({ data }: DataTableProps) {
       >
         {data.map((row, i, a) => (
           <Fragment key={row.id}>
-            <InfoCard {...row} shade={i % 2 !== 0} />
+            <InfoCard lang={lang} {...row} shade={i % 2 !== 0} />
 
             {i + 1 !== a.length && <Divider />}
           </Fragment>
@@ -215,23 +226,23 @@ export default function DataTable({ data }: DataTableProps) {
             <TableRow>
               <TC sx={{ width: '1%' }} />
 
-              <TC>Odometer</TC>
+              <TC>{t('table.odometer', 'Odometer')}</TC>
 
-              <TC>Banner</TC>
+              <TC>{t('table.banner', 'Banner')}</TC>
 
-              <TC>Date</TC>
+              <TC>{t('table.date', 'Date')}</TC>
 
-              <TC align="right">Price</TC>
+              <TC align="right">{t('table.price', 'Price')}</TC>
 
-              <TC align="right">Liters</TC>
+              <TC align="right">{t('table.liters', 'Liters')}</TC>
 
-              <TC align="right">Economy</TC>
+              <TC align="right">{t('table.economy', 'Economy')}</TC>
             </TableRow>
           </TableHead>
 
           <TableBody>
             {data.map((row) => (
-              <TR key={row.id} {...row} />
+              <TR lang={lang} key={row.id} {...row} />
             ))}
           </TableBody>
         </Table>

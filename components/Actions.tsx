@@ -1,8 +1,9 @@
 'use client';
 
-import { URLParams } from '@constants';
+import { URLParams, i18nNS } from '@constants';
 import { useData } from '@contexts/DataStore';
 import getActionQuery from '@lib/getActionQuery';
+import { useTranslation } from '@lib/i18n/client';
 import {
   Add as AddIcon,
   DeleteForever as DeleteIcon,
@@ -13,10 +14,11 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-export default function Actions() {
+export default function Actions({ params: { lang } }: IParams) {
   const [mounted, setMounted] = useState(false);
   const { selected, isLoading, deleteSelected, changeSelected } = useData();
   const router = useRouter();
+  const t = useTranslation(lang, i18nNS.Main);
 
   useEffect(() => setMounted(true), []);
 
@@ -43,7 +45,7 @@ export default function Actions() {
               <SpeedDialAction
                 icon={<DeleteIcon />}
                 tooltipOpen
-                tooltipTitle={'Delete'}
+                tooltipTitle={t('actions.delete', 'Delete')}
                 onClick={() => (!selected ? undefined : deleteSelected())}
                 FabProps={{
                   disabled: !selected,
@@ -53,7 +55,7 @@ export default function Actions() {
               <SpeedDialAction
                 icon={<EditIcon />}
                 tooltipOpen
-                tooltipTitle={'Edit'}
+                tooltipTitle={t('actions.edit', 'Edit')}
                 onClick={() =>
                   !selected
                     ? undefined
@@ -67,7 +69,7 @@ export default function Actions() {
               <SpeedDialAction
                 icon={<AddIcon />}
                 tooltipOpen
-                tooltipTitle={'New'}
+                tooltipTitle={t('actions.new', 'New')}
                 onClick={() => {
                   changeSelected();
 

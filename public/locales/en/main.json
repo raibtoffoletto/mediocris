@@ -1,1 +1,33 @@
-{}
+{
+  "title": "Refuels",
+
+  "provider": {
+    "alert": "This action cannot be undone.",
+    "deleted": "Record deleted!",
+    "saved": "Record saved!"
+  },
+
+  "table": {
+    "odometer": "Odometer",
+    "banner": "Banner",
+    "date": "Date",
+    "price": "Price",
+    "liters": "Liters",
+    "economy": "Economy"
+  },
+
+  "actions": {
+    "new": "New",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+
+  "modal": {
+    "title_new": "Add new record",
+    "title_edit": "Edit record",
+    "alert": "You will loose any changes made.",
+    "full_tank": "Full tank",
+    "cancel": "Cancel",
+    "save": "Save"
+  }
+}

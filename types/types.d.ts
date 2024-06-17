@@ -1,4 +1,4 @@
-type IParent = {
+type IParent<T = {}> = T & {
   children?: React.ReactNode;
 };
 

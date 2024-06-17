@@ -1,18 +1,11 @@
 'use client';
 
+import I18nContext from '@contexts/I18nContext';
 import withLines from '@lib/withLines';
-import type { i18n as I18N } from 'i18next';
-import { useCallback, useEffect, useState } from 'react';
-import initI18next from './init';
+import { useCallback, useContext } from 'react';
 
 export function useTranslation(lng?: string, ns?: string) {
-  const [i18n, setI18n] = useState<I18N | null>(null);
-
-  useEffect(() => {
-    initI18next(lng, ns).then((instance) => {
-      setI18n(instance);
-    });
-  }, [lng, ns]);
+  const { i18n } = useContext(I18nContext);
 
   return useCallback(
     (key: string, defaultValue: string) => {

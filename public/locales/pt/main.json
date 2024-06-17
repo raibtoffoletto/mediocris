@@ -1,1 +1,33 @@
-{}
+{
+  "title": "Abastecimentos",
+
+  "provider": {
+    "alert": "Esta ação não pode ser desfeita",
+    "deleted": "Registro removido!",
+    "saved": "Registro salvo!"
+  },
+
+  "table": {
+    "odometer": "Odômetro",
+    "banner": "Bandeira",
+    "date": "Data",
+    "price": "Preço",
+    "liters": "Litros",
+    "economy": "Média"
+  },
+
+  "actions": {
+    "new": "Adicionar",
+    "edit": "Editar",
+    "delete": "Remover"
+  },
+
+  "modal": {
+    "title_new": "Novo abastecimento",
+    "title_edit": "Editar abastecimento",
+    "alert": "Qualquer alterção feita será perdida.",
+    "full_tank": "Tanque cheio",
+    "cancel": "Cancelar",
+    "save": "Salvar"
+  }
+}

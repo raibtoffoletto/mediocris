@@ -1,4 +1,6 @@
 {
+  "description": "Controle de abastecimentos",
+
   "not_found": {
     "title": "Oops!",
     "message": "Cade!? Sumiu!? \n Provavelmente nunca existiu!",
@@ -10,5 +12,11 @@
     "show": "mostrar",
     "hide": "esconder",
     "button": "Entrar"
+  },
+
+  "menu": {
+    "languages": "Línguas",
+    "charts": "Estatísticas",
+    "sign_out": "Sair"
   }
 }
