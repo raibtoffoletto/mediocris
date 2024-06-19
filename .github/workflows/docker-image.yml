@@ -22,4 +22,4 @@ jobs:
       - name: Tag Docker image as latest
         run: docker tag raibtoffoletto/mediocris:$TAG_VERSION raibtoffoletto/mediocris:latest
       - name: Push the Docker image
-        run: docker push raibtoffoletto/mediocris:$TAG_VERSION
+        run: docker push raibtoffoletto/mediocris:$TAG_VERSION && docker push raibtoffoletto/mediocris:latest
