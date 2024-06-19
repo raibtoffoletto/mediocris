@@ -1,0 +1,16 @@
+services:
+  app:
+    image: raibtoffoletto/mediocris:latest
+    restart: always
+    container_name: mediocris
+    user: 1001:1001
+    volumes:
+      - ./data:/data
+    ports:
+      - 3000:3000
+    environment:
+      - APP_PASSWORD
+      - JWT_KEY
+      - JWT_ISSUER
+      - JWT_AUDIENCE
+      - DB_PATH

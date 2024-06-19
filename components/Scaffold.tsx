@@ -1,4 +1,4 @@
-import { Routes, i18nNS } from '@constants';
+import { i18nNS } from '@constants';
 import d from '@lib/dynamic';
 import { useTranslation } from '@lib/i18n/server';
 import { sedan } from '@lib/infrastructure/fonts';
@@ -37,7 +37,7 @@ export default async function Scaffold({
             justifyContent: { xs: 'space-between', sm: 'flex-start' },
           }}
         >
-          <Button href={Routes.main} sx={{ p: 0 }} LinkComponent={Link}>
+          <Button href={`/${lang}`} sx={{ p: 0 }} LinkComponent={Link}>
             <Image
               alt="mediocris logo"
               src="/mediocris-256.png"

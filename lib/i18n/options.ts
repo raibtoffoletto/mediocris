@@ -8,7 +8,7 @@ export default function getOptions(
     ns,
     lng,
     defaultNS,
-    debug: true,
+    debug: false,
     fallbackLng: defaultLang,
     fallbackNS: defaultNS,
     supportedLngs: languages,

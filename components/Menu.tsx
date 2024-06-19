@@ -70,7 +70,6 @@ export default function Menu() {
     setSubmenu(false);
     handleClose();
 
-    console.log(path.replace(`${lang}`, _lang));
     router.push(path.replace(`${lang}`, _lang));
   };
 
