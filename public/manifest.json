@@ -1,0 +1,25 @@
+{
+  "name": "Mediocris",
+  "short_name": "Mediocris",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#259358",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "128x128 64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "mediocris-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "mediocris-256.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    }
+  ]
+}
