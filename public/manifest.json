@@ -1,8 +1,9 @@
 {
   "name": "Mediocris",
   "short_name": "Mediocris",
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "theme_color": "#259358",
   "background_color": "#ffffff",
   "icons": [
@@ -14,7 +15,8 @@
     {
       "src": "mediocris-192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "maskable"
     },
     {
       "src": "mediocris-256.png",

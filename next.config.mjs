@@ -1,9 +1,5 @@
 /** @type {import('next').NextConfig} */
-import nextPWA from 'next-pwa';
-
-const withPWA = nextPWA({
-  dest: 'public',
-});
+import withSerwistInit from '@serwist/next';
 
 const nextConfig = {
   output: 'standalone',
@@ -13,6 +9,9 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
 };
 
-export default process.env.NODE_ENV === 'production'
-  ? withPWA(nextConfig)
-  : nextConfig;
+const withSerwist = withSerwistInit({
+  swSrc: 'app/sw.ts',
+  swDest: 'public/sw.js',
+});
+
+export default withSerwist(nextConfig);

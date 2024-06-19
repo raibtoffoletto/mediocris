@@ -2,7 +2,7 @@ import { i18nNS } from '@constants';
 import d from '@lib/dynamic';
 import { useTranslation } from '@lib/i18n/server';
 import { sedan } from '@lib/infrastructure/fonts';
-import metadata from '@lib/infrastructure/metadata';
+import { metadata } from '@lib/infrastructure/metadata';
 import {
   AppBar,
   Box,
