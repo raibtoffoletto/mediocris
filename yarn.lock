@@ -777,7 +777,7 @@
     upath "2.0.1"
     zod "3.23.8"
 
-"@serwist/next@^9.0.3":
+"@serwist/next@9.0.3":
   version "9.0.3"
   resolved "https://registry.yarnpkg.com/@serwist/next/-/next-9.0.3.tgz#958d6b3c58d33b689e6050ece428e7fd3b83242b"
   integrity sha512-A/lyu4c/m34MOXiwjdt9QuJAN4giwx07+SZMHhMYTZUWfKhJ1x52oPb7NaQb9nAFlCke47GrPIAxc5IpDsck5w==
@@ -3292,6 +3292,7 @@ string_decoder@^1.1.1:
     safe-buffer "~5.2.0"
 
 "strip-ansi-cjs@npm:strip-ansi@^6.0.1", strip-ansi@^6.0.0, strip-ansi@^6.0.1:
+  name strip-ansi-cjs
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
   integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==

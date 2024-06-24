@@ -41,4 +41,6 @@ next-env.d.ts
 !.vscode/settings.json
 
 app-data.db
+app-data*.db
 /data
+public/*.js

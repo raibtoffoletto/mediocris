@@ -96,7 +96,7 @@ function mapEconomy(row: Refuel, index: number, table: Refuel[]) {
 
 export async function listRefuels(): Promise<IEconomy<Refuel>[]> {
   const records = await query<Refuel>(
-    'SELECT rowid, * FROM refuels ORDER BY date DESC;',
+    'SELECT rowid, * FROM refuels ORDER BY date DESC, odometer DESC, rowid DESC;',
     [],
     mapRefuel
   );
